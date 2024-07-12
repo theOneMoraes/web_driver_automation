@@ -8,8 +8,8 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service as ChromeService
 
-# n sei q q faz foi um grande amigo que fez, então se souber um comentário melhor escreva abaixo
-# Aqui--
+# A classe WebDriverChrome encapsula a configuração e inicialização de um navegador Chrome com Selenium.
+# Ela permite a opção de executar o navegador em modo headless (sem interface gráfica).
 class WebDriverChrome:
     def __init__(self, headless=False):
         chrome_service = ChromeService(ChromeDriverManager().install())
@@ -33,11 +33,20 @@ class WebDriverChrome:
 def click_all_buttons_order(url):
     try:
         chrome.driver.get(url)
-        buttons = chrome.driver.find_elements(By.XPATH, '//*[@aria-label="Refill" and @data-bs-original-title="Refill"]')
-        print(buttons)
+
+        WebDriverWait(chrome.driver, 10).until(EC.presence_of_all_elements_located((By.XPATH, '//*[@aria-label="Refill"]')))
+        buttonsRefill = chrome.driver.find_elements(By.XPATH, '//*[@aria-label="Refill"]')
+
+        # chrome.driver.execute_script("arguments[0].click();", buttonLogin)
+        # buttons = chrome.driver.find_elements(By.XPATH, '//*[@aria-label="Refill"]')
         # looping de clicks para cada botão achado
-        for button in buttons:
-            button.click()
+        if buttonsRefill:
+            for button in buttonsRefill:
+                chrome.driver.execute_script("arguments[0].click();", button)
+                # button.click()
+        else:
+            print(f"No refill buttons found on page {url}")
+
     except Exception as e:
         print(f"An error occurred while processing URL {url}: {e}")
 
@@ -54,15 +63,15 @@ def main():
         WebDriverWait(chrome.driver, 10).until(EC.presence_of_element_located((By.XPATH, '//*[@id="password"]')))
         chrome.driver.find_element(By.XPATH, '//*[@id="password"]').send_keys('senhadajust')
 
-        WebDriverWait(chrome.driver, 10).until(EC.presence_of_element_located((By.XPATH, '//input[@type="submit" and @value="Login"]')))
-        buttonLogin = chrome.driver.find_element(By.XPATH, '//input[@type="submit" and @value="Login"]')
+        WebDriverWait(chrome.driver, 10).until(EC.presence_of_element_located((By.XPATH, '//*[@type="submit" and @value="Login"]')))
+        buttonLogin = chrome.driver.find_element(By.XPATH, '//*[@type="submit" and @value="Login"]')
 
         chrome.driver.execute_script("arguments[0].click();", buttonLogin)
         # -----------------------------------------------------
 
         # se tiver recaptcha resolver manualmente e dar enter no console
         try:
-            recaptcha = WebDriverWait(chrome.driver, 10).until(
+            recaptcha = WebDriverWait(chrome.driver, 5).until(
                 EC.presence_of_element_located((By.CLASS_NAME, "g-recaptcha"))
             )
             if recaptcha:
@@ -75,8 +84,8 @@ def main():
             WebDriverWait(chrome.driver, 10).until(EC.presence_of_element_located((By.XPATH, '//*[@id="password"]')))
             chrome.driver.find_element(By.XPATH, '//*[@id="password"]').send_keys('senhadajust')
 
-            WebDriverWait(chrome.driver, 10).until(EC.presence_of_element_located((By.XPATH, '//input[@type="submit" and @value="Login"]')))
-            buttonLogin = chrome.driver.find_element(By.XPATH, '//input[@type="submit" and @value="Login"]')
+            WebDriverWait(chrome.driver, 10).until(EC.presence_of_element_located((By.XPATH, '//*[@type="submit" and @value="Login"]')))
+            buttonLogin = chrome.driver.find_element(By.XPATH, '//*[@type="submit" and @value="Login"]')
 
             chrome.driver.execute_script("arguments[0].click();", buttonLogin)
         except Exception as e:
