@@ -34,6 +34,7 @@ def click_all_buttons_order(url):
     try:
         chrome.driver.get(url)
         buttons = chrome.driver.find_elements(By.XPATH, '//*[@aria-label="Refill" and @data-bs-original-title="Refill"]')
+        print(buttons)
         # looping de clicks para cada botão achado
         for button in buttons:
             button.click()
@@ -46,15 +47,17 @@ def main():
         base_url = 'https://justanotherpanel.com'
 
         chrome.driver.get(base_url)
+        
+        WebDriverWait(chrome.driver, 10).until(EC.presence_of_element_located((By.XPATH, '//*[@id="username"]')))
+        chrome.driver.find_element(By.XPATH, '//*[@id="username"]').send_keys('miller_')
 
-        textBox = chrome.driver.find_element(By.XPATH, '//*[@id="username"]')
-        textBox.send_keys('miller_')
+        WebDriverWait(chrome.driver, 10).until(EC.presence_of_element_located((By.XPATH, '//*[@id="password"]')))
+        chrome.driver.find_element(By.XPATH, '//*[@id="password"]').send_keys('senhadajust')
 
-        textBox = chrome.driver.find_element(By.XPATH, '//*[@id="password"]')
-        textBox.send_keys('senhadajust')
-
+        WebDriverWait(chrome.driver, 10).until(EC.presence_of_element_located((By.XPATH, '//input[@type="submit" and @value="Login"]')))
         buttonLogin = chrome.driver.find_element(By.XPATH, '//input[@type="submit" and @value="Login"]')
-        buttonLogin.click()
+
+        chrome.driver.execute_script("arguments[0].click();", buttonLogin)
         # -----------------------------------------------------
 
         # se tiver recaptcha resolver manualmente e dar enter no console
@@ -66,14 +69,16 @@ def main():
                 print("Please solve the reCAPTCHA manually and press Enter...")
                 input()
                 
-                textBox = chrome.driver.find_element(By.XPATH, '//*[@id="username"]')
-                textBox.send_keys('miller_')
+            WebDriverWait(chrome.driver, 10).until(EC.presence_of_element_located((By.XPATH, '//*[@id="username"]')))
+            chrome.driver.find_element(By.XPATH, '//*[@id="username"]').send_keys('miller_')
 
-                textBox = chrome.driver.find_element(By.XPATH, '//*[@id="password"]')
-                textBox.send_keys('senhadajust')
+            WebDriverWait(chrome.driver, 10).until(EC.presence_of_element_located((By.XPATH, '//*[@id="password"]')))
+            chrome.driver.find_element(By.XPATH, '//*[@id="password"]').send_keys('senhadajust')
 
-                buttonLogin = chrome.driver.find_element(By.XPATH, '//input[@type="submit" and @value="Login"]')
-                buttonLogin.click()
+            WebDriverWait(chrome.driver, 10).until(EC.presence_of_element_located((By.XPATH, '//input[@type="submit" and @value="Login"]')))
+            buttonLogin = chrome.driver.find_element(By.XPATH, '//input[@type="submit" and @value="Login"]')
+
+            chrome.driver.execute_script("arguments[0].click();", buttonLogin)
         except Exception as e:
             print("No reCAPTCHA found, proceeding with login...")
         # -----------------------------------------------------
