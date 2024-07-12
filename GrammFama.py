@@ -1,36 +1,12 @@
-from selenium import webdriver
+from webdriver_setup import WebDriverChrome
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from subprocess import CREATE_NO_WINDOW
 from time import sleep
-from webdriver_manager.chrome import ChromeDriverManager
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.chrome.service import Service as ChromeService
 
-# A classe WebDriverChrome encapsula a configuração e inicialização de um navegador Chrome com Selenium.
-# Ela permite a opção de executar o navegador em modo headless (sem interface gráfica).
-class WebDriverChrome:
-    def __init__(self, headless=False):
-        chrome_service = ChromeService(ChromeDriverManager().install())
-        chrome_service.creation_flags = CREATE_NO_WINDOW
-        chrome_options = Options()
-        chrome_options.use_chromium = True
-        chrome_options.add_argument("--window-size=1920,1080")
-        chrome_options.add_argument("--start-maximized")
-        chrome_options.add_argument("--disable-gpu")
-        if headless:
-            # Used to hide the browser
-            chrome_options.add_argument("--headless=new")
-        self.driver = webdriver.Chrome(service=chrome_service, options=chrome_options)
-        # SET PAGE TIMOUT
-        self.driver.set_page_load_timeout(10)
-    
-    def close(self):
-        self.driver.quit()
 
 # Criando função para clicar nos botão
-def click_all_buttons_order(url):
+def click_all_buttons_order(chrome, url):
     try:
         chrome.driver.get(url)
         buttons = len(chrome.driver.find_elements(By.XPATH, '//*[@class="btn btn-actions"]'))
@@ -42,7 +18,8 @@ def click_all_buttons_order(url):
     except Exception as e:
         print(f"An error occurred while processing URL {url}: {e}")
 
-def main():
+def run_script():
+    chrome = WebDriverChrome()
     try:
         # entrando no site e logando 
         base_url = 'https://gramfamaoficial.com.br/'
@@ -89,7 +66,7 @@ def main():
         urls = [f'{base_url}{i}' for i in range(1, 21)]
         # print(urls)
         for url in urls:
-            click_all_buttons_order(url)
+            click_all_buttons_order(chrome, url)
             sleep(2)
         # ----------------------------------------------------
     finally:
@@ -97,5 +74,4 @@ def main():
         chrome.close()
 
 if __name__ == '__main__':
-    chrome = WebDriverChrome()
-    main()
+    run_script()
