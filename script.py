@@ -30,7 +30,6 @@ def click_all_buttons_order(url):
     try:
         # open the url #
         chrome.driver.get(url)
-        sleep(5)
         # create element related to the text box #
         buttons = chrome.driver.find_elements(By.XPATH, '//*[@aria-label="Refill"]')
         # Click each button
@@ -46,8 +45,6 @@ def click_all_buttons_order(url):
 
 
 def main ():
-    chrome= WebDriverChrome()
-
     try:
         # Create a list of URLs to visit
         base_url = 'https://www.example.com/page'
@@ -58,3 +55,6 @@ def main ():
     finally:
         chrome.close()
 
+if __name__ == '__main__':
+    chrome = WebDriverChrome()
+    main()
