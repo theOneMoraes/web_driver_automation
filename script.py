@@ -52,6 +52,10 @@ def main ():
 
         textBox = chrome.driver.find_element(By.XPATH, '//*[@id="password"]')
         textBox.send_keys('senhadajust')
+
+        buttonLogin = chrome.driver.find_element(By.XPATH, '//*[@type=submit and @value="Login"]')
+        buttonLogin.click()
+
         sleep(20)
         # Create a list of URLs to visit
         base_url = 'https://justanotherpanel.com/orders/all/'
