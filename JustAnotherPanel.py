@@ -33,20 +33,12 @@ class WebDriverChrome:
 def click_all_buttons_order(url):
     try:
         chrome.driver.get(url)
-
-        WebDriverWait(chrome.driver, 10).until(EC.presence_of_all_elements_located((By.XPATH, '//*[@aria-label="Refill"]')))
-        buttonsRefill = chrome.driver.find_elements(By.XPATH, '//*[@aria-label="Refill"]')
-
-        # chrome.driver.execute_script("arguments[0].click();", buttonLogin)
-        # buttons = chrome.driver.find_elements(By.XPATH, '//*[@aria-label="Refill"]')
-        # looping de clicks para cada botão achado
-        if buttonsRefill:
-            for button in buttonsRefill:
-                chrome.driver.execute_script("arguments[0].click();", button)
-                # button.click()
-        else:
-            print(f"No refill buttons found on page {url}")
-
+        buttons = len(chrome.driver.find_elements(By.XPATH, '//*[@aria-label="Refill" and @data-bs-original-title="Refill"]'))
+        if buttons > 0:
+            for item in range(0, buttons):
+                elem = chrome.driver.find_element(By.XPATH, f'//*[@aria-label="Refill" and @data-bs-original-title="Refill"]')
+                chrome.driver.execute_script("arguments[0].click();", elem)
+                sleep(0.5)
     except Exception as e:
         print(f"An error occurred while processing URL {url}: {e}")
 
@@ -101,6 +93,7 @@ def main():
             sleep(2)
         # ----------------------------------------------------
     finally:
+        print("ALL REFFELLED")
         chrome.close()
 
 if __name__ == '__main__':
