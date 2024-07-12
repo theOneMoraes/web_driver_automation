@@ -35,23 +35,31 @@ def click_all_buttons_order(url):
         # Click each button
         for button in buttons:
             button.click()
-            # Optionally, add a sleep time to wait for any resulting actions to complete
-            sleep(2)  # Adjust the sleep time as necessary
-
         # Delay to observe actions
-        sleep(10)
+        sleep(20)
     except Exception as e:
         print(f"An error occurred while processing URL {url}: {e}")
 
 
 def main ():
     try:
+        base_url = 'https://justanotherpanel.com'
+
+        chrome.driver.get(base_url)
+        
+        textBox = chrome.driver.find_element(By.XPATH, '//*[@id="username"]')
+        textBox.send_keys('miller_')
+
+        textBox = chrome.driver.find_element(By.XPATH, '//*[@id="password"]')
+        textBox.send_keys('senhadajust')
+        sleep(20)
         # Create a list of URLs to visit
         base_url = 'https://justanotherpanel.com/orders/all/'
-        urls = [f'{base_url}{i}' for i in range(1, 50)]
-
+        urls = [f'{base_url}{i}' for i in range(1, 51)]
+        print(urls)
         for url in urls:
             click_all_buttons_order(url)
+            sleep(4)
     finally:
         chrome.close()
 
