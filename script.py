@@ -47,7 +47,7 @@ def click_all_buttons_order(url):
 def main ():
     try:
         # Create a list of URLs to visit
-        base_url = 'https://www.example.com/page'
+        base_url = 'https://justanotherpanel.com/orders/all/'
         urls = [f'{base_url}{i}' for i in range(1, 50)]
 
         for url in urls:
