@@ -13,7 +13,7 @@ def click_all_buttons_order(chrome, url):
             for item in range(0, buttons):
                 elem = chrome.driver.find_element(By.XPATH, f'//*[@class="btn btn-actions"]')
                 chrome.driver.execute_script("arguments[0].click();", elem)
-                sleep(0.5)
+                sleep(0.3)
     except Exception as e:
         print(f"An error occurred while processing URL {url}: {e}")
 
@@ -62,14 +62,14 @@ def run_script():
 
         # Criando lista de urls para loopar com a função de clickar nos botões
         base_url = 'https://painelturbo.com/orders/'
-        urls = [f'{base_url}{i}' for i in range(1, 21)]
+        urls = [f'{base_url}{i}' for i in range(1, 26)]
         # print(urls)
         for url in urls:
             click_all_buttons_order(chrome, url)
-            sleep(2)
+            sleep(1)
         # ----------------------------------------------------
     finally:
-        print("ALL REFFELLED")
+        print("ALL REFELLED")
         chrome.close()
 
 if __name__ == '__main__':

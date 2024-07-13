@@ -5,3 +5,5 @@ Menção extremamente honrosa para meu amigo e colega [Mayson](https://github.co
 # WebDriver
 https://googlechromelabs.github.io/chrome-for-testing/#stable
 
+# pip install -r requirements.txt
+Instalar dependencias
